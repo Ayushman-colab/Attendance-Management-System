@@ -4,9 +4,9 @@ spring:
 
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:file:./data/attendance_db
-    username: sa
-    password:
+    url: jdbc:h2:file:./data/${DB_NAME:attendance_db}
+    username: ${DB_USER:sa}
+    password: ${DB_PASS:}
 
   h2:
     console:
@@ -24,3 +24,15 @@ spring:
   cloud:
     config:
       enabled: false
+
+  cloudinary:
+    cloud_name: ${CLOUDINARY_CLOUD_NAME}
+    api_key: ${CLOUDINARY_API_KEY}
+    api_secret: ${CLOUDINARY_API_SECRET}
+
+  server:
+    port: ${APP_PORT:8080}
+
+  logging:
+    level:
+      root: ${LOG_LEVEL:INFO}
