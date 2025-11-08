@@ -4,9 +4,9 @@ spring:
 
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:file:./data/attendance_db
-    username: sa
-    password:
+    url: jdbc:h2:file:./data/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASS}
 
   h2:
     console:
@@ -24,3 +24,31 @@ spring:
   cloud:
     config:
       enabled: false
+  redis:
+    host: localhost
+    port: 6379
+    password:
+    timeout: 60000
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1ms
+
+  cloudinary:
+    cloud_name: ${CLOUDINARY_CLOUD_NAME}
+    api_key: ${CLOUDINARY_API_KEY}
+    api_secret: ${CLOUDINARY_API_SECRET}
+
+  server:
+    port: ${APP_PORT:8080}
+
+  logging:
+    level:
+      root: ${LOG_LEVEL:INFO}
+
+jwt:
+  secret: yourSecretKey123456789
+  expiration: 3600000
+  refresh-expiration : 112000000
