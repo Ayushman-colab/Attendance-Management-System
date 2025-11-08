@@ -66,4 +66,15 @@ public class User {
 
     @LastModifiedBy
     Long updatedBy;
+
+    @Column(name="profile_url")
+    String profilePictureUrl;
+
+    @Column(name = "profile_image_public_id")
+    String profileImagePublicId;
+
+    @Column(name = "profile_image_updated_at")
+    LocalDateTime profileImageUpdatedAt;
+
+
 }

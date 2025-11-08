@@ -1,5 +1,6 @@
 package com.attendace.Exception;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,10 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@RestControllerAdvice
+
 public class GlobalExceptionHandler {
 
-
+    @Bean
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<Map<String, Object>> handleApiException(ApiException ex) {
         Map<String, Object> body = new HashMap<>();

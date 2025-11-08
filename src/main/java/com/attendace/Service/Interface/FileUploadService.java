@@ -1,4 +1,4 @@
-package com.attendace.Service;
+package com.attendace.Service.Interface;
 
 
 import org.springframework.web.multipart.MultipartFile;

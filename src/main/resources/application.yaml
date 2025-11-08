@@ -8,6 +8,11 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASS}
 
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
   h2:
     console:
       enabled: true

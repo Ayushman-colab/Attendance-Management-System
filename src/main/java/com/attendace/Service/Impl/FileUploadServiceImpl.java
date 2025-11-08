@@ -1,6 +1,6 @@
 package com.attendace.Service.Impl;
 
-import com.attendace.Service.FileUploadService;
+import com.attendace.Service.Interface.FileUploadService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.stereotype.Service;

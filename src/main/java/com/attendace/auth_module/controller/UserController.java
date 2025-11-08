@@ -1,5 +1,6 @@
 package com.attendace.auth_module.controller;
 
+import com.attendace.Service.Interface.FileUploadService;
 import com.attendace.auth_module.dto.Common.UserDTO;
 import com.attendace.auth_module.dto.Request.UpdateUserRequest;
 import com.attendace.auth_module.dto.Request.UpdateUserRoleRequest;
