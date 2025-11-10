@@ -1,6 +1,7 @@
 package com.attendace.auth_module.entities;
 
 import com.attendace.entities.Attendance;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -70,6 +71,18 @@ public class User {
     @LastModifiedBy
     Long updatedBy;
 
+    @Column(name="profile_url")
+    String profilePictureUrl;
+
+    @Column(name = "profile_image_public_id")
+    String profileImagePublicId;
+
+    @Column(name = "profile_image_updated_at")
+    LocalDateTime profileImageUpdatedAt;
+
+
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Attendance> attendanceList = new ArrayList<>();
 }

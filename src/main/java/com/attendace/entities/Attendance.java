@@ -2,6 +2,7 @@ package com.attendace.entities;
 
 import com.attendace.auth_module.entities.User;
 import com.attendace.enums.AttendanceType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,5 +35,6 @@ public class Attendance {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     User user;
 }
