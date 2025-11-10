@@ -16,7 +16,8 @@ import com.attendace.auth_module.exception.UnauthorizedException;
 import com.attendace.auth_module.repository.RoleRepository;
 import com.attendace.auth_module.repository.UserRepository;
 import com.attendace.auth_module.security.JwtTokenProvider;
-import com.attendace.auth_module.service.inter.AuthService;   
+import com.attendace.auth_module.service.inter.AuthService;
+import com.attendace.auth_module.service.inter.EmailService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,6 +46,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private EmailService emailService;
 
     @Value("${jwt.expiration}")
     private long jwtExpirationInMs;
@@ -123,6 +128,30 @@ public class AuthServiceImpl implements AuthService {
         log.info("User registered successfully: {}", user.getUsername());
 
         return buildUserDTO(user);
+    }
+
+    public String forgotPassword(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            throw new ResourceNotFoundException("Email is required");
+        }
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+
+        // Generate a 6-digit random OTP
+        SecureRandom random = new SecureRandom();
+        int otp = 100000 + random.nextInt(900000);
+
+        // Save encoded OTP and expiry time
+        user.setOtp(passwordEncoder.encode(String.valueOf(otp)));
+        user.setExpiryDate(LocalDateTime.now().plusMinutes(5));
+
+        userRepository.save(user);
+
+        // Send OTP via email
+        emailService.sendOtpEmail(email, String.valueOf(otp));
+
+        return "OTP sent successfully to " + email;
     }
 
     @Transactional

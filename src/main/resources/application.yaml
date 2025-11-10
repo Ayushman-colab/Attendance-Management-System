@@ -2,6 +2,19 @@ spring:
   application:
     name: Attendancemanagementsystem
 
+  # Email configuration
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:file:./data/${DB_NAME}
@@ -69,5 +82,7 @@ jwt:
   logging:
     level:
       root: ${LOG_LEVEL:INFO}
+
+
 
 # docker run --name redis -d -p 6379:6379 redis

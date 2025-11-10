@@ -86,6 +86,11 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
+    @GetMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestParam String email) {
+        return ResponseEntity.ok(authService.forgotPassword(email));
+    }
+
     @PostMapping("/refresh")
     @Operation(
             summary = "Refresh Access Token",

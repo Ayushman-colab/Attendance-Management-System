@@ -85,4 +85,13 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Attendance> attendanceList = new ArrayList<>();
+
+    @Column(name = "otp")
+    private String otp;
+
+    private LocalDateTime expiryDate;
+
+    private String resetToken;
+
+    private boolean used;
 }

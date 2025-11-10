@@ -25,4 +25,5 @@ public interface AuthService {
     public UserDTO getCurrentUser(String token);
 
 
+    String forgotPassword(String email);
 }
