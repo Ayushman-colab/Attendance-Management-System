@@ -53,12 +53,6 @@ public class User {
     Boolean isActive = true;
     LocalDateTime lastLoginAt;
 
-    @Column(name = "password_reset_token")
-    private String passwordResetToken;
-
-    @Column(name = "password_reset_expiry")
-    private LocalDateTime passwordResetExpiry;
-
     @CreatedDate
     LocalDateTime createdAt;
 
