@@ -29,7 +29,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -84,6 +86,52 @@ public class AuthController {
         log.info("Registration request for username: {}", request.getUsername());
         UserDTO user = authService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    @PostMapping("/registers")
+    @Operation(
+            summary = "Register New User",
+            description = "Create a new user account with specified role"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User registered successfully",
+                    content = @Content(schema = @Schema(implementation = UserDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Username or email already exists",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Role not found",
+                    content = @Content)
+    })
+    public ResponseEntity<List<UserDTO>> registerMultiple(@Valid @RequestBody List<RegisterRequest> requests) {
+        log.info("Bulk registration request for {} users", requests.size());
+        List<UserDTO> registeredUsers = new ArrayList<>();
+
+        for (RegisterRequest request : requests) {
+            try {
+                UserDTO user = authService.register(request);
+                registeredUsers.add(user);
+            } catch (Exception e) {
+                log.error("Failed to register user: {}", request.getUsername(), e);
+                // You can either continue or stop here depending on your design
+                // continue; // To skip failed user and continue others
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(registeredUsers);
+    }
+
+    @GetMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestParam String email) {
+        return ResponseEntity.ok(authService.forgotPassword(email));
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<Map<String, String>> verifyOtp(@RequestParam String email, @RequestParam String otp) {
+        return ResponseEntity.ok(authService.verifyOtp(email, otp));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestParam String resetToken, @RequestParam String newPassword) {
+        return ResponseEntity.ok(authService.resetPassword(resetToken, newPassword));
     }
 
     @PostMapping("/refresh")

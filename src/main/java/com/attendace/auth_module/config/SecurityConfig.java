@@ -55,7 +55,12 @@ public class SecurityConfig {
             "/swagger-ui.html",
             "/swagger-resources/**",
             "/webjars/**",
-            "/h2-console/**"
+            "/h2-console/**",
+            "/api/auth/forgot-password",
+            "/api/auth/verify-otp",
+            "/api/auth/reset-password",
+            "/api/auth/registers",
+            "/api/auth/refresh"
     };
 
     @Bean

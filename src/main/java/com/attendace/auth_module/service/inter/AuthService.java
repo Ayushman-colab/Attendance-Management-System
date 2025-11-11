@@ -9,6 +9,8 @@ import com.attendace.auth_module.dto.Response.TokenResponse;
 import com.attendace.auth_module.dto.Response.ValidateTokenResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public interface AuthService {
 
@@ -25,4 +27,9 @@ public interface AuthService {
     public UserDTO getCurrentUser(String token);
 
 
+    public String forgotPassword(String email);
+
+    public Map<String, String> verifyOtp(String email, String otp);
+
+    public String resetPassword(String resetToken, String newPassword);
 }

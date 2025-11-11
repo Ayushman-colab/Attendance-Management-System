@@ -182,11 +182,11 @@
 //
 //        User superAdmin = User.builder()
 //                .username("?")
-//                .email("?@gym.com")
+//                .email("?@gmail.com")
 //                .passwordHash(passwordEncoder.encode("?"))
-//                .firstName("Super")
-//                .lastName("Admin")
-//                .phone("9999999999")
+//                .firstName("?")
+//                .lastName("?")
+//                .phone("?")
 //                .role(superAdminRole)
 //                .isActive(true)
 //                .build();
