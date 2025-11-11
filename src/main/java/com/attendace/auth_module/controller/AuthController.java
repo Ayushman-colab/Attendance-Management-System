@@ -30,6 +30,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -89,6 +90,16 @@ public class AuthController {
     @GetMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestParam String email) {
         return ResponseEntity.ok(authService.forgotPassword(email));
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<Map<String, String>> verifyOtp(@RequestParam String email, @RequestParam String otp) {
+        return ResponseEntity.ok(authService.verifyOtp(email, otp));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestParam String resetToken, @RequestParam String newPassword) {
+        return ResponseEntity.ok(authService.resetPassword(resetToken, newPassword));
     }
 
     @PostMapping("/refresh")

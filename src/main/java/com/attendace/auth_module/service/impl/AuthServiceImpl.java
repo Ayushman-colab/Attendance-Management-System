@@ -28,7 +28,10 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -142,10 +145,15 @@ public class AuthServiceImpl implements AuthService {
         SecureRandom random = new SecureRandom();
         int otp = 100000 + random.nextInt(900000);
 
-        // Save encoded OTP and expiry time
+        // Save new encoded OTP and expiry time
         user.setOtp(passwordEncoder.encode(String.valueOf(otp)));
-        user.setExpiryDate(LocalDateTime.now().plusMinutes(5));
+        user.setExpiryDate(LocalDateTime.now().plusMinutes(10));
 
+        //  Reset OTP usage and clear any old reset tokens
+        user.setUsed(false);
+        user.setResetToken(null);
+
+        // Save updated user
         userRepository.save(user);
 
         // Send OTP via email
@@ -153,6 +161,59 @@ public class AuthServiceImpl implements AuthService {
 
         return "OTP sent successfully to " + email;
     }
+
+
+    public Map<String, String> verifyOtp(String email, String otp) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+
+        if (user.getOtp() == null || user.getOtp().isEmpty())
+            throw new RuntimeException("No OTP found. Please request again.");
+
+        if (user.getExpiryDate().isBefore(LocalDateTime.now()))
+            throw new RuntimeException("OTP has expired.");
+
+        if (user.isUsed())
+            throw new RuntimeException("OTP already used.");
+
+        if (!passwordEncoder.matches(otp, user.getOtp()))
+            throw new RuntimeException("Invalid OTP.");
+
+        user.setUsed(true);
+        user.setResetToken(UUID.randomUUID().toString());
+        userRepository.save(user);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "OTP verified successfully.");
+        response.put("resetToken", user.getResetToken());
+        return response;
+    }
+
+    public String resetPassword(String resetToken, String newPassword) {
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            throw new RuntimeException("Password cannot be empty.");
+        }
+
+        System.out.println(resetToken);
+
+        User user = userRepository.findByResetToken(resetToken)
+                .orElseThrow(() -> new RuntimeException("Invalid reset token."));
+
+        if (user.getExpiryDate().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Reset token has expired.");
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(newPassword));
+        user.setUsed(false);
+        user.setOtp(null);
+        user.setResetToken(null);
+        user.setExpiryDate(null);
+        userRepository.save(user);
+
+        return "Password updated successfully.";
+    }
+
+
 
     @Transactional
     public TokenResponse refreshToken(RefreshTokenRequest request) {

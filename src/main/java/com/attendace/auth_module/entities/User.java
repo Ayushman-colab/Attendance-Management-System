@@ -80,8 +80,6 @@ public class User {
     @Column(name = "profile_image_updated_at")
     LocalDateTime profileImageUpdatedAt;
 
-
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Attendance> attendanceList = new ArrayList<>();
@@ -93,5 +91,5 @@ public class User {
 
     private String resetToken;
 
-    private boolean used;
+    private boolean isUsed;
 }

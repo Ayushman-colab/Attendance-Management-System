@@ -29,7 +29,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsernameOrEmail(String username, String email);
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
-    Optional<User> findByPasswordResetToken(String token);
+    Optional<User> findByResetToken(String token);
 
     @Query("SELECT u FROM User u WHERE u.email = :email AND u.isActive = true")
     Optional<User> findActiveUserByEmail(String email);
@@ -55,4 +55,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Count queries
     Long countByIsActiveTrue();
     Long countByIsActiveFalse();
+
 }
