@@ -13,20 +13,20 @@ public class CacheConfig {
     /**
      * Option 1: Use Redis Cache (if Redis is available)
      */
-    // @Bean
-    // public CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
-    //     RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-    //             .entryTtl(Duration.ofMinutes(30)) // Cache for 30 minutes
-    //             .serializeKeysWith(RedisSerializationContext.SerializationPair
-    //                     .fromSerializer(new StringRedisSerializer()))
-    //             .serializeValuesWith(RedisSerializationContext.SerializationPair
-    //                     .fromSerializer(new GenericJackson2JsonRedisSerializer()))
-    //             .disableCachingNullValues();
-    //
-    //     return RedisCacheManager.builder(connectionFactory)
-    //             .cacheDefaults(config)
-    //             .build();
-    // }
+//     @Bean
+//     public CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+//         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
+//                 .entryTtl(Duration.ofMinutes(30)) // Cache for 30 minutes
+//                 .serializeKeysWith(RedisSerializationContext.SerializationPair
+//                         .fromSerializer(new StringRedisSerializer()))
+//                 .serializeValuesWith(RedisSerializationContext.SerializationPair
+//                         .fromSerializer(new GenericJackson2JsonRedisSerializer()))
+//                 .disableCachingNullValues();
+//
+//         return RedisCacheManager.builder(connectionFactory)
+//                 .cacheDefaults(config)
+//                 .build();
+//     }
 
     /**
      * Option 2: Use Simple In-Memory Cache (for development/testing)

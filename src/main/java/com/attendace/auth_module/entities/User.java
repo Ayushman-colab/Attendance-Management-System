@@ -1,5 +1,7 @@
 package com.attendace.auth_module.entities;
 
+import com.attendace.entities.Attendance;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +15,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -49,12 +53,6 @@ public class User {
     Boolean isActive = true;
     LocalDateTime lastLoginAt;
 
-    @Column(name = "password_reset_token")
-    private String passwordResetToken;
-
-    @Column(name = "password_reset_expiry")
-    private LocalDateTime passwordResetExpiry;
-
     @CreatedDate
     LocalDateTime createdAt;
 
@@ -66,4 +64,26 @@ public class User {
 
     @LastModifiedBy
     Long updatedBy;
+
+    @Column(name="profile_url")
+    String profilePictureUrl;
+
+    @Column(name = "profile_image_public_id")
+    String profileImagePublicId;
+
+    @Column(name = "profile_image_updated_at")
+    LocalDateTime profileImageUpdatedAt;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Attendance> attendanceList = new ArrayList<>();
+
+    @Column(name = "otp")
+    private String otp;
+
+    private LocalDateTime expiryDate;
+
+    private String resetToken;
+
+    private boolean isUsed;
 }

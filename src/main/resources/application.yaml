@@ -2,12 +2,30 @@ spring:
   application:
     name: Attendancemanagementsystem
 
+  # Email configuration
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:file:./data/${DB_NAME}
     username: ${DB_USER}
     password: ${DB_PASS}
 
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
   h2:
     console:
       enabled: true
@@ -50,5 +68,21 @@ spring:
 
 jwt:
   secret: yourSecretKey123456789
-  expiration: 3600000
+  expiration: 2000
   refresh-expiration : 112000000
+
+  cloudinary:
+    cloud_name: ${CLOUDINARY_CLOUD_NAME}
+    api_key: ${CLOUDINARY_API_KEY}
+    api_secret: ${CLOUDINARY_API_SECRET}
+
+  server:
+    port: ${APP_PORT:8080}
+
+  logging:
+    level:
+      root: ${LOG_LEVEL:INFO}
+
+
+
+# docker run --name redis -d -p 6379:6379 redis
